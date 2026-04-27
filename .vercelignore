@@ -1,0 +1,17 @@
+# Backend and database
+backend/
+*.db
+
+# Large data files
+*.mlar
+*.zip
+
+# Scripts (not needed for deployment)
+scripts/msa_county_reference22.txt
+
+# Local env files
+.env.local
+.env.*.local
+
+# Logs
+*.log

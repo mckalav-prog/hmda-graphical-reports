@@ -1,0 +1,74 @@
+[
+  {
+    "month": "Jan",
+    "sales": 4000,
+    "expenses": 2400,
+    "profit": 1600
+  },
+  {
+    "month": "Feb",
+    "sales": 3000,
+    "expenses": 1398,
+    "profit": 1602
+  },
+  {
+    "month": "Mar",
+    "sales": 2000,
+    "expenses": 9800,
+    "profit": -7800
+  },
+  {
+    "month": "Apr",
+    "sales": 2780,
+    "expenses": 3908,
+    "profit": -1128
+  },
+  {
+    "month": "May",
+    "sales": 1890,
+    "expenses": 4800,
+    "profit": -2910
+  },
+  {
+    "month": "Jun",
+    "sales": 2390,
+    "expenses": 3800,
+    "profit": -1410
+  },
+  {
+    "month": "Jul",
+    "sales": 3490,
+    "expenses": 4300,
+    "profit": -810
+  },
+  {
+    "month": "Aug",
+    "sales": 5200,
+    "expenses": 3100,
+    "profit": 2100
+  },
+  {
+    "month": "Sep",
+    "sales": 6100,
+    "expenses": 2800,
+    "profit": 3300
+  },
+  {
+    "month": "Oct",
+    "sales": 7300,
+    "expenses": 3200,
+    "profit": 4100
+  },
+  {
+    "month": "Nov",
+    "sales": 8200,
+    "expenses": 3500,
+    "profit": 4700
+  },
+  {
+    "month": "Dec",
+    "sales": 9100,
+    "expenses": 4000,
+    "profit": 5100
+  }
+]

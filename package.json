@@ -1,0 +1,28 @@
+{
+  "name": "graphical-reports-site",
+  "version": "1.0.0",
+  "description": "A React website for displaying graphical reports with data upload",
+  "private": true,
+  "dependencies": {
+    "d3": "^7.9.0",
+    "jspdf": "^4.0.0",
+    "jspdf-autotable": "^5.0.7",
+    "papaparse": "^5.4.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.10.0",
+    "topojson-client": "^3.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.0",
+    "vercel": "^50.4.8",
+    "vite": "^5.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "aggregate": "node scripts/aggregate-hmda-data.js"
+  },
+  "type": "module"
+}

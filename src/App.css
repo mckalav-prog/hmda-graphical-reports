@@ -1,0 +1,58 @@
+.App {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Dark modern header */
+.header {
+  background: linear-gradient(180deg, #18181b 0%, #0f0f12 100%);
+  color: white;
+  margin-bottom: 0;
+  padding: 48px 40px 40px;
+  border-bottom: 1px solid #27272a;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -1px;
+  color: #fafafa;
+}
+
+.header p {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #71717a;
+  letter-spacing: 0.2px;
+}
+
+/* Main content area */
+.main-content {
+  padding: 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header {
+    padding: 32px 20px;
+  }
+
+  .header h1 {
+    font-size: 1.75rem;
+  }
+
+  .header p {
+    font-size: 0.9rem;
+  }
+
+  .main-content {
+    padding: 20px;
+    gap: 24px;
+  }
+}
