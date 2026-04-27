@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import './EconomicIndicatorsChart.css'
 
+const FRED_API_KEY = import.meta.env.VITE_FRED_API_KEY || ''
+
 // FRED Series IDs for housing and economic indicators
 const FRED_SERIES = {
   HOUST: { name: 'Housing Starts', unit: 'Thousands of Units', color: '#3b82f6' },
@@ -22,25 +24,46 @@ const EconomicIndicatorsChart = () => {
     fetchAllIndicators()
   }, [])
 
+  const fetchFredSeries = async (seriesId) => {
+    const start = '2023-01-01'
+    const end = new Date().toISOString().split('T')[0]
+    if (FRED_API_KEY) {
+      const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${FRED_API_KEY}&file_type=json&observation_start=${start}&observation_end=${end}&sort_order=asc`
+      const res = await fetch(url)
+      if (!res.ok) return null
+      const json = await res.json()
+      return (json.observations || [])
+        .filter(o => o.value !== '.')
+        .map(o => ({
+          date: new Date(o.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+          value: parseFloat(o.value)
+        }))
+    } else {
+      // backend proxy fallback
+      const res = await fetch(`/api/fred/${seriesId}`)
+      if (!res.ok) return null
+      const json = await res.json()
+      return (json.data || [])
+        .filter(d => d.date >= start)
+        .map(d => ({
+          date: new Date(d.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+          value: d.value
+        }))
+    }
+  }
+
   const fetchAllIndicators = async () => {
     setLoading(true)
     setError('')
     try {
-      // Try live backend proxy
       const results = {}
       let liveSuccess = false
       for (const seriesId of Object.keys(FRED_SERIES)) {
         try {
-          const res = await fetch(`/api/fred/${seriesId}`)
-          if (res.ok) {
-            const json = await res.json()
-            if (json.data && json.data.length > 0) {
-              const filtered = json.data
-                .filter(d => d.date >= '2023-01-01')
-                .map(d => ({ date: new Date(d.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', year: 'numeric' }), value: d.value }))
-              results[seriesId] = filtered
-              liveSuccess = true
-            }
+          const data = await fetchFredSeries(seriesId)
+          if (data && data.length > 0) {
+            results[seriesId] = data
+            liveSuccess = true
           }
         } catch (_) { /* fall through */ }
       }

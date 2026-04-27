@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import './MortgageRatesChart.css'
 
+const FRED_API_KEY = import.meta.env.VITE_FRED_API_KEY || ''
+
 const MortgageRatesChart = () => {
   const [ratesData, setRatesData] = useState([])
   const [loading, setLoading] = useState(true)
@@ -16,29 +18,43 @@ const MortgageRatesChart = () => {
     try {
       setLoading(true)
       setError('')
-      // Try live FRED data via backend proxy
-      const res = await fetch('/api/fred/MORTGAGE30US')
-      if (res.ok) {
-        const json = await res.json()
-        if (json.data && json.data.length > 0) {
-          // Filter to weekly data from Jan 2023 onwards, sample ~monthly for readability
-          const filtered = json.data.filter(d => d.date >= '2023-01-01')
-          // Pick one per month (first reading of each month)
-          const monthly = []
-          let lastMonth = ''
-          for (const d of filtered) {
-            const month = d.date.substring(0, 7)
-            if (month !== lastMonth) {
-              const label = new Date(d.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
-              monthly.push({ date: label, rate: d.value, forecast: null, fullDate: d.date })
-              lastMonth = month
-            }
-          }
-          const latest = monthly[monthly.length - 1]?.rate ?? 6.23
-          setRatesData(monthly)
-          setCurrentRate(latest)
-          return
+      const start = '2023-01-01'
+      const end = new Date().toISOString().split('T')[0]
+      let observations = null
+
+      if (FRED_API_KEY) {
+        // Live FRED API
+        const url = `https://api.stlouisfed.org/fred/series/observations?series_id=MORTGAGE30US&api_key=${FRED_API_KEY}&file_type=json&observation_start=${start}&observation_end=${end}&sort_order=asc`
+        const res = await fetch(url)
+        if (res.ok) {
+          const json = await res.json()
+          observations = json.observations?.filter(o => o.value !== '.').map(o => ({ date: o.date, value: parseFloat(o.value) }))
         }
+      } else {
+        // Try backend proxy as fallback
+        const res = await fetch('/api/fred/MORTGAGE30US')
+        if (res.ok) {
+          const json = await res.json()
+          observations = json.data
+        }
+      }
+
+      if (observations && observations.length > 0) {
+        // Sample one reading per month
+        const monthly = []
+        let lastMonth = ''
+        for (const d of observations) {
+          const month = d.date.substring(0, 7)
+          if (month !== lastMonth) {
+            const label = new Date(d.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+            monthly.push({ date: label, rate: d.value, forecast: null, fullDate: d.date })
+            lastMonth = month
+          }
+        }
+        const latest = monthly[monthly.length - 1]?.rate ?? 6.23
+        setRatesData(monthly)
+        setCurrentRate(latest)
+        return
       }
     } catch (err) {
       console.warn('Live FRED fetch failed, using embedded data:', err)
