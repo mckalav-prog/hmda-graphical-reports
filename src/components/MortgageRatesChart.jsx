@@ -54,12 +54,14 @@ const MortgageRatesChart = () => {
         const latest = monthly[monthly.length - 1]?.rate ?? 6.23
         setRatesData(monthly)
         setCurrentRate(latest)
+        setLoading(false)
         return
       }
     } catch (err) {
       console.warn('Live FRED fetch failed, using embedded data:', err)
     }
     setEmbeddedData()
+    setLoading(false)
   }
 
   const setEmbeddedData = () => {
@@ -161,13 +163,13 @@ const MortgageRatesChart = () => {
           <div className="chart-area">
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={ratesData} margin={{ top: 5, right: 24, left: 10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="date" tick={{ fontSize: 11, fill: 'var(--text-secondary)' }} interval="preserveStartEnd" stroke="var(--border-mid)" />
-                <YAxis domain={[5, 8.5]} ticks={[5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5]} tick={{ fontSize: 11, fill: 'var(--text-secondary)' }} stroke="var(--border-mid)" label={{ value: 'Rate (%)', angle: -90, position: 'insideLeft', style: { fontSize: 11, fill: 'var(--text-muted)' } }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#2a2a38" />
+                <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#9898b0' }} interval="preserveStartEnd" stroke="#353545" />
+                <YAxis domain={[5, 8.5]} ticks={[5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5]} tick={{ fontSize: 11, fill: '#9898b0' }} stroke="#353545" label={{ value: 'Rate (%)', angle: -90, position: 'insideLeft', style: { fontSize: 11, fill: '#55556a' } }} />
                 <Tooltip content={<CustomTooltip />} />
-                <Legend wrapperStyle={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }} iconType="line" />
-                <Line type="monotone" dataKey="rate" stroke="var(--red)" strokeWidth={2.5} dot={{ fill: 'var(--red)', r: 2.5 }} name="Historical Rate" connectNulls={false} />
-                <Line type="monotone" dataKey="forecast" stroke="var(--accent-hover)" strokeWidth={2.5} strokeDasharray="7 4" dot={{ fill: 'var(--accent-hover)', r: 2.5 }} name="Forecast" connectNulls={true} />
+                <Legend wrapperStyle={{ fontSize: '12px', fontWeight: 600, color: '#9898b0' }} iconType="line" />
+                <Line type="monotone" dataKey="rate" stroke="#ff5e6e" strokeWidth={2.5} dot={{ fill: '#ff5e6e', r: 2.5 }} name="Historical Rate" connectNulls={false} />
+                <Line type="monotone" dataKey="forecast" stroke="#6b93ff" strokeWidth={2.5} strokeDasharray="7 4" dot={{ fill: '#6b93ff', r: 2.5 }} name="Forecast" connectNulls={true} />
               </LineChart>
             </ResponsiveContainer>
           </div>
