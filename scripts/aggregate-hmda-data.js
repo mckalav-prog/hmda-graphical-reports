@@ -71,14 +71,10 @@ const aggregations = {
   topMetros: {}
 };
 
-// Loan purpose labels
+// Loan purpose labels (only included purposes: Purchase and Refinancing)
 const LOAN_PURPOSE_LABELS = {
   '1': 'Purchase',
-  '2': 'Refinance',
-  '31': 'Cash-out Refinance',
-  '32': 'Other Refinance',
-  '4': 'Other Purpose',
-  '5': 'Not Applicable'
+  '31': 'Refinancing'
 };
 
 // Loan type labels
@@ -128,9 +124,9 @@ async function processHMDAFile(filePath, year) {
     if (openEndLOC !== '2') continue;
     // Filter: 1-4 unit residential properties only
     if (!['1', '2', '3', '4'].includes(totalUnits)) continue;
-    // Filter: exclude loan_purpose 4=Other and 5=Not Applicable
-    // (also naturally excludes any home improvement if coded separately)
-    if (!['1', '2', '31', '32'].includes(loanPurpose)) continue;
+    // Filter: include only Purchase (1) and Refinancing (31)
+    // Excludes: Home Improvement (2), Cash-out Refi (32), Other (4), Not Applicable (5)
+    if (!['1', '31'].includes(loanPurpose)) continue;
     // Filter: must have a valid loan amount
     if (loanAmount === 0) continue;
 
@@ -166,7 +162,7 @@ async function processHMDAFile(filePath, year) {
         stateAgg.purchaseCount++;
         stateAgg.purchaseAmount += loanAmount;
         if (propertyValue > 0) stateAgg._purchasePropertyValues.push(propertyValue);
-      } else if (['2', '31', '32'].includes(loanPurpose)) {
+      } else if (loanPurpose === '31') {
         stateAgg.refinanceCount++;
         stateAgg.refinanceAmount += loanAmount;
         if (propertyValue > 0) stateAgg._refinancePropertyValues.push(propertyValue);
@@ -201,7 +197,7 @@ async function processHMDAFile(filePath, year) {
         msaAgg.purchaseCount++;
         msaAgg.purchaseAmount += loanAmount;
         if (propertyValue > 0) msaAgg._purchasePropertyValues.push(propertyValue);
-      } else if (['2', '31', '32'].includes(loanPurpose)) {
+      } else if (loanPurpose === '31') {
         msaAgg.refinanceCount++;
         msaAgg.refinanceAmount += loanAmount;
         if (propertyValue > 0) msaAgg._refinancePropertyValues.push(propertyValue);
@@ -238,7 +234,7 @@ async function processHMDAFile(filePath, year) {
         lenderAgg.purchaseCount++;
         lenderAgg.purchaseAmount += loanAmount;
         if (propertyValue > 0) lenderAgg._purchasePropertyValues.push(propertyValue);
-      } else if (['2', '31', '32'].includes(loanPurpose)) {
+      } else if (loanPurpose === '31') {
         lenderAgg.refinanceCount++;
         lenderAgg.refinanceAmount += loanAmount;
         if (propertyValue > 0) lenderAgg._refinancePropertyValues.push(propertyValue);

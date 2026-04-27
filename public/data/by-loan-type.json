@@ -3,60 +3,60 @@
     "1": {
       "loanType": "1",
       "loanTypeLabel": "Conventional",
-      "count": 5792002,
-      "totalAmount": 1791812120000,
-      "avgLoanSize": 309359.7205249584
+      "count": 3846520,
+      "totalAmount": 1417497190000,
+      "avgLoanSize": 368514.1868494119
     },
     "2": {
       "loanType": "2",
       "loanTypeLabel": "FHA",
-      "count": 1520739,
-      "totalAmount": 436000085000,
-      "avgLoanSize": 286702.7708239218
+      "count": 1136775,
+      "totalAmount": 344407005000,
+      "avgLoanSize": 302968.48980668996
     },
     "3": {
       "loanType": "3",
       "loanTypeLabel": "VA",
-      "count": 777967,
-      "totalAmount": 279620655000,
-      "avgLoanSize": 359424.8277883252
+      "count": 581898,
+      "totalAmount": 217650930000,
+      "avgLoanSize": 374036.2228431787
     },
     "4": {
       "loanType": "4",
       "loanTypeLabel": "FSA/RHS",
-      "count": 68612,
-      "totalAmount": 11955720000,
-      "avgLoanSize": 174251.1514020871
+      "count": 68458,
+      "totalAmount": 11942000000,
+      "avgLoanSize": 174442.72400595987
     }
   },
   "2024": {
     "1": {
       "loanType": "1",
       "loanTypeLabel": "Conventional",
-      "count": 5993840,
-      "totalAmount": 1882516960000,
-      "avgLoanSize": 314075.27728467894
+      "count": 3972102,
+      "totalAmount": 1540733260000,
+      "avgLoanSize": 387888.6443500192
     },
     "2": {
       "loanType": "2",
       "loanTypeLabel": "FHA",
-      "count": 1696361,
-      "totalAmount": 516206855000,
-      "avgLoanSize": 304302.4774797346
+      "count": 1296388,
+      "totalAmount": 415090090000,
+      "avgLoanSize": 320189.70400836784
     },
     "3": {
       "loanType": "3",
       "loanTypeLabel": "VA",
-      "count": 965106,
-      "totalAmount": 365263500000,
-      "avgLoanSize": 378469.8261123649
+      "count": 750123,
+      "totalAmount": 292739245000,
+      "avgLoanSize": 390254.9915147249
     },
     "4": {
       "loanType": "4",
       "loanTypeLabel": "FSA/RHS",
-      "count": 70580,
-      "totalAmount": 12809650000,
-      "avgLoanSize": 181491.21564182488
+      "count": 70539,
+      "totalAmount": 12801405000,
+      "avgLoanSize": 181479.81967422276
     }
   }
 }

@@ -7,26 +7,12 @@
       "totalAmount": 1815866980000,
       "avgLoanSize": 368203.34830046294
     },
-    "2": {
-      "loanPurpose": "2",
-      "loanPurposeLabel": "Refinance",
-      "count": 1164177,
-      "totalAmount": 120948995000,
-      "avgLoanSize": 103892.27325398114
-    },
     "31": {
       "loanPurpose": "31",
-      "loanPurposeLabel": "Cash-out Refinance",
+      "loanPurposeLabel": "Refinancing",
       "count": 701955,
       "totalAmount": 175630145000,
       "avgLoanSize": 250201.43029111554
-    },
-    "32": {
-      "loanPurpose": "32",
-      "loanPurposeLabel": "Other Refinance",
-      "count": 1361492,
-      "totalAmount": 406942460000,
-      "avgLoanSize": 298894.4922188305
     }
   },
   "2024": {
@@ -37,26 +23,12 @@
       "totalAmount": 1885598715000,
       "avgLoanSize": 381852.03527314
     },
-    "2": {
-      "loanPurpose": "2",
-      "loanPurposeLabel": "Refinance",
-      "count": 1118306,
-      "totalAmount": 123073670000,
-      "avgLoanSize": 110053.66152019215
-    },
     "31": {
       "loanPurpose": "31",
-      "loanPurposeLabel": "Cash-out Refinance",
+      "loanPurposeLabel": "Refinancing",
       "count": 1151117,
       "totalAmount": 375765285000,
       "avgLoanSize": 326435.35366083554
-    },
-    "32": {
-      "loanPurpose": "32",
-      "loanPurposeLabel": "Other Refinance",
-      "count": 1518429,
-      "totalAmount": 392359295000,
-      "avgLoanSize": 258398.18325387622
     }
   }
 }
