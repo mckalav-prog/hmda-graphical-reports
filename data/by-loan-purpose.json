@@ -3,32 +3,32 @@
     "1": {
       "loanPurpose": "1",
       "loanPurposeLabel": "Purchase",
-      "count": 416905,
-      "totalAmount": 155419605000,
-      "avgLoanSize": 372793.8139384272
+      "count": 4931696,
+      "totalAmount": 1815866980000,
+      "avgLoanSize": 368203.34830046294
     },
-    "2": {
-      "loanPurpose": "2",
-      "loanPurposeLabel": "Refinance",
-      "count": 10080324,
-      "totalAmount": 2764935090000,
-      "avgLoanSize": 274290.29959751293
+    "31": {
+      "loanPurpose": "31",
+      "loanPurposeLabel": "Refinancing",
+      "count": 701955,
+      "totalAmount": 175630145000,
+      "avgLoanSize": 250201.43029111554
     }
   },
   "2024": {
     "1": {
       "loanPurpose": "1",
       "loanPurposeLabel": "Purchase",
-      "count": 369796,
-      "totalAmount": 146501740000,
-      "avgLoanSize": 396169.07700461877
+      "count": 4938035,
+      "totalAmount": 1885598715000,
+      "avgLoanSize": 381852.03527314
     },
-    "2": {
-      "loanPurpose": "2",
-      "loanPurposeLabel": "Refinance",
-      "count": 10709830,
-      "totalAmount": 3017344820000,
-      "avgLoanSize": 281736.01448389003
+    "31": {
+      "loanPurpose": "31",
+      "loanPurposeLabel": "Refinancing",
+      "count": 1151117,
+      "totalAmount": 375765285000,
+      "avgLoanSize": 326435.35366083554
     }
   }
 }

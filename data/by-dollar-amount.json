@@ -2,85 +2,85 @@
   "2023": {
     "$100k-$200k": {
       "bucket": "$100k-$200k",
-      "count": 2362751,
-      "totalAmount": 342110535000
-    },
-    "$300k-$400k": {
-      "bucket": "$300k-$400k",
-      "count": 1411580,
-      "totalAmount": 486714770000
-    },
-    "$0-$100k": {
-      "bucket": "$0-$100k",
-      "count": 2670740,
-      "totalAmount": 142711150000
+      "count": 1036284,
+      "totalAmount": 157691430000
     },
     "$500k-$750k": {
       "bucket": "$500k-$750k",
-      "count": 873999,
-      "totalAmount": 524521175000
+      "count": 716077,
+      "totalAmount": 431493855000
     },
     "$200k-$300k": {
       "bucket": "$200k-$300k",
-      "count": 1972467,
-      "totalAmount": 486917605000
+      "count": 1309069,
+      "totalAmount": 326977495000
+    },
+    "$300k-$400k": {
+      "bucket": "$300k-$400k",
+      "count": 1085471,
+      "totalAmount": 375460955000
+    },
+    "$0-$100k": {
+      "bucket": "$0-$100k",
+      "count": 525370,
+      "totalAmount": 27491620000
     },
     "$400k-$500k": {
       "bucket": "$400k-$500k",
-      "count": 823745,
-      "totalAmount": 365720385000
+      "count": 659982,
+      "totalAmount": 293548190000
     },
     "$1M+": {
       "bucket": "$1M+",
-      "count": 200103,
-      "totalAmount": 415989145000
+      "count": 153786,
+      "totalAmount": 252303740000
     },
     "$750k-$1M": {
       "bucket": "$750k-$1M",
-      "count": 181844,
-      "totalAmount": 155669930000
+      "count": 147612,
+      "totalAmount": 126529840000
     }
   },
   "2024": {
     "$100k-$200k": {
       "bucket": "$100k-$200k",
-      "count": 2357588,
-      "totalAmount": 341111170000
-    },
-    "$1M+": {
-      "bucket": "$1M+",
-      "count": 211063,
-      "totalAmount": 399569985000
+      "count": 1004108,
+      "totalAmount": 153452670000
     },
     "$0-$100k": {
       "bucket": "$0-$100k",
-      "count": 2669849,
-      "totalAmount": 143503115000
-    },
-    "$200k-$300k": {
-      "bucket": "$200k-$300k",
-      "count": 2090595,
-      "totalAmount": 517004115000
+      "count": 506677,
+      "totalAmount": 25373215000
     },
     "$300k-$400k": {
       "bucket": "$300k-$400k",
-      "count": 1564810,
-      "totalAmount": 540111540000
+      "count": 1215331,
+      "totalAmount": 420791105000
     },
     "$750k-$1M": {
       "bucket": "$750k-$1M",
-      "count": 256936,
-      "totalAmount": 214411230000
+      "count": 213708,
+      "totalAmount": 178386910000
     },
-    "$500k-$750k": {
-      "bucket": "$500k-$750k",
-      "count": 996452,
-      "totalAmount": 594016560000
+    "$1M+": {
+      "bucket": "$1M+",
+      "count": 169183,
+      "totalAmount": 303364615000
+    },
+    "$200k-$300k": {
+      "bucket": "$200k-$300k",
+      "count": 1400613,
+      "totalAmount": 350563025000
     },
     "$400k-$500k": {
       "bucket": "$400k-$500k",
-      "count": 932333,
-      "totalAmount": 414118845000
+      "count": 754161,
+      "totalAmount": 335591795000
+    },
+    "$500k-$750k": {
+      "bucket": "$500k-$750k",
+      "count": 825371,
+      "totalAmount": 493840665000
     }
   }
 }
