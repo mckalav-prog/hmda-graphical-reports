@@ -294,16 +294,19 @@ const USMapVisualization = () => {
   }
 
   return (
-    <div className="us-map-section">
-      <div className="map-header">
-        <h2>Year-over-Year Growth in Origination Volume by State</h2>
-        <p className="map-subtitle">2024 vs 2023 - Total Mortgage Originations</p>
+    <div className="us-map-section card">
+      <div className="section-header">
+        <div>
+          <div className="card-title">Year-over-Year Growth in Origination Volume by State</div>
+          <div className="card-subtitle">2024 vs 2023 — Total Mortgage Originations · Hover for details</div>
+        </div>
+        <span className="badge badge-blue">2023–2024</span>
       </div>
 
       {loading ? (
-        <div className="map-loading">Loading map data...</div>
+        <div className="state-loading">Loading map data…</div>
       ) : error ? (
-        <div className="map-error">{error}</div>
+        <div className="state-error">{error}</div>
       ) : (
         <div className="map-container">
           <svg ref={svgRef}></svg>
@@ -311,9 +314,7 @@ const USMapVisualization = () => {
         </div>
       )}
 
-      <div className="map-footnote">
-        Hover over states to see detailed year-over-year growth statistics
-      </div>
+      <div className="footnote">Hover over any state to see detailed YoY growth statistics</div>
     </div>
   )
 }

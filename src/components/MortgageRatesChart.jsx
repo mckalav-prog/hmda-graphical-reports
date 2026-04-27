@@ -139,84 +139,57 @@ const MortgageRatesChart = () => {
 
   return (
     <div className="mortgage-rates-section">
-      <div className="rates-header">
-        <div>
-          <h2>US 30-Year Fixed Mortgage Rates</h2>
-          <p className="rates-subtitle">Historical Data (Jan 2023 – Apr 2026) + 12-Month Forecast</p>
+
+      {/* Card: chart */}
+      <div className="card">
+        <div className="rates-header section-header">
+          <div>
+            <div className="card-title">US 30-Year Fixed Mortgage Rates</div>
+            <div className="card-subtitle">Historical (Jan 2023 – Apr 2026) + 12-Month Forecast</div>
+          </div>
+          {currentRate && (
+            <div className="current-rate">
+              <span className="rate-label">Current Rate</span>
+              <span className="rate-value">{currentRate.toFixed(2)}%</span>
+            </div>
+          )}
         </div>
-        {currentRate && (
-          <div className="current-rate">
-            <span className="rate-label">Current Rate</span>
-            <span className="rate-value">{currentRate.toFixed(2)}%</span>
+
+        {loading ? (
+          <div className="state-loading">Loading mortgage rate data…</div>
+        ) : (
+          <div className="chart-area">
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={ratesData} margin={{ top: 5, right: 24, left: 10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                <XAxis dataKey="date" tick={{ fontSize: 11, fill: 'var(--text-secondary)' }} interval="preserveStartEnd" stroke="var(--border-mid)" />
+                <YAxis domain={[5, 8.5]} ticks={[5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5]} tick={{ fontSize: 11, fill: 'var(--text-secondary)' }} stroke="var(--border-mid)" label={{ value: 'Rate (%)', angle: -90, position: 'insideLeft', style: { fontSize: 11, fill: 'var(--text-muted)' } }} />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend wrapperStyle={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }} iconType="line" />
+                <Line type="monotone" dataKey="rate" stroke="var(--red)" strokeWidth={2.5} dot={{ fill: 'var(--red)', r: 2.5 }} name="Historical Rate" connectNulls={false} />
+                <Line type="monotone" dataKey="forecast" stroke="var(--accent-hover)" strokeWidth={2.5} strokeDasharray="7 4" dot={{ fill: 'var(--accent-hover)', r: 2.5 }} name="Forecast" connectNulls={true} />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         )}
       </div>
 
-      {loading ? (
-        <div className="rates-loading">Loading mortgage rate data...</div>
-      ) : (
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={ratesData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#3f3f46" />
-            <XAxis
-              dataKey="date"
-              tick={{ fontSize: 11, fill: '#a1a1aa' }}
-              interval="preserveStartEnd"
-              stroke="#52525b"
-            />
-            <YAxis
-              domain={[5, 8.5]}
-              ticks={[5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5]}
-              tick={{ fontSize: 11, fill: '#a1a1aa' }}
-              label={{ value: 'Rate (%)', angle: -90, position: 'insideLeft', style: { fontSize: 12, fill: '#71717a' } }}
-              stroke="#52525b"
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend
-              wrapperStyle={{ fontSize: '13px', fontWeight: 600 }}
-              iconType="line"
-            />
-            <Line
-              type="monotone"
-              dataKey="rate"
-              stroke="#ff6b6b"
-              strokeWidth={3}
-              dot={{ fill: '#ff6b6b', r: 3 }}
-              name="Historical Rate"
-              connectNulls={false}
-            />
-            <Line
-              type="monotone"
-              dataKey="forecast"
-              stroke="#48dbfb"
-              strokeWidth={3}
-              strokeDasharray="8 4"
-              dot={{ fill: '#48dbfb', r: 3 }}
-              name="Forecast"
-              connectNulls={true}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      )}
-
-      <div className="forecast-info">
+      {/* Card: methodology */}
+      <div className="card forecast-box">
         <h3>Forecast Methodology</h3>
         <p>
-          The 12-month forecast (dashed blue line) projects mortgage rates declining toward <strong>5.68%</strong> by January 2027,
-          based on expected Federal Reserve rate cuts, moderating inflation, and economic stabilization.
-          Key assumptions include:
+          The 12-month forecast (dashed line) projects rates declining toward <strong>5.68%</strong> by Jan 2027,
+          based on expected Fed rate cuts, moderating inflation, and economic stabilization.
         </p>
         <ul>
-          <li><strong>Fed Policy:</strong> Gradual rate cuts expected in H2 2026 as inflation targets are met</li>
-          <li><strong>Economic Growth:</strong> Steady GDP growth with soft landing scenario</li>
+          <li><strong>Fed Policy:</strong> Gradual cuts in H2 2026 as inflation targets are met</li>
+          <li><strong>Economic Growth:</strong> Steady GDP with soft landing scenario</li>
           <li><strong>10-Year Treasury:</strong> Projected decline to 3.8–4.0% range</li>
-          <li><strong>Market Conditions:</strong> Increased competition and improved liquidity in mortgage markets</li>
+          <li><strong>Market Conditions:</strong> Increased competition and improved liquidity</li>
         </ul>
+        <div className="footnote" style={{marginTop:'14px'}}>Source: FRED / Freddie Mac Primary Mortgage Market Survey® — Updated April 2026</div>
       </div>
 
-      <div className="rates-footnote">
-        Historical Data Source: Federal Reserve Economic Data (FRED), Freddie Mac Primary Mortgage Market Survey® — Updated April 2026
-      </div>
     </div>
   )
 }

@@ -1,41 +1,225 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* ─── Design tokens ───────────────────────────────────────────────── */
+:root {
+  --bg-base:    #0a0a0f;
+  --bg-surface: #111118;
+  --bg-card:    #16161e;
+  --bg-raised:  #1e1e28;
+  --bg-hover:   #24242f;
+
+  --border:     #2a2a38;
+  --border-mid: #353545;
+
+  --text-primary:   #f0f0f5;
+  --text-secondary: #9898b0;
+  --text-muted:     #55556a;
+
+  --accent:       #4f7eff;
+  --accent-light: rgba(79, 126, 255, 0.15);
+  --accent-hover: #6b93ff;
+
+  --green:        #2ecc8e;
+  --green-bg:     rgba(46, 204, 142, 0.12);
+  --red:          #ff5e6e;
+  --red-bg:       rgba(255, 94, 110, 0.12);
+  --amber:        #f59e0b;
+
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+  --radius-xl:  18px;
+
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg:  0 8px 32px rgba(0,0,0,0.6);
+
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
 }
+
+/* ─── Reset ───────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font);
+  background: var(--bg-base);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #0f0f12;
   min-height: 100vh;
-  color: #e4e4e7;
+  line-height: 1.5;
 }
 
-#root {
-  min-height: 100vh;
+#root { min-height: 100vh; }
+
+/* ─── Scrollbar ───────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-surface); }
+::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #45455a; }
+
+/* ─── Shared card shell ───────────────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 28px 32px;
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
 }
 
-::-webkit-scrollbar-track {
-  background: #1a1a1f;
+.card-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #3f3f46;
-  border-radius: 4px;
+/* ─── Section divider ─────────────────────────────────────────────── */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #52525b;
+/* ─── Badges / pills ──────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.badge-blue  { background: var(--accent-light); color: var(--accent-hover); }
+.badge-green { background: var(--green-bg);     color: var(--green); }
+.badge-red   { background: var(--red-bg);       color: var(--red); }
+.badge-amber { background: rgba(245,158,11,.15); color: var(--amber); }
+
+/* ─── Stat number ─────────────────────────────────────────────────── */
+.stat-num {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+/* ─── Shared table ────────────────────────────────────────────────── */
+.tbl-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.tbl thead th {
+  background: var(--bg-raised);
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-mid);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.tbl thead th:first-child,
+.tbl thead th.left { text-align: left; }
+
+.tbl tbody td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+  text-align: right;
+  vertical-align: middle;
+}
+
+.tbl tbody td:first-child,
+.tbl tbody td.left { text-align: left; }
+
+.tbl tbody tr:last-child td { border-bottom: none; }
+
+.tbl tbody tr:hover { background: var(--bg-hover); }
+
+.mono { font-family: var(--mono); }
+
+/* ─── Positive / negative ─────────────────────────────────────────── */
+.pos { color: var(--green); }
+.neg { color: var(--red); }
+.pos-bg { background: var(--green-bg); }
+.neg-bg { background: var(--red-bg); }
+
+/* ─── Loading / error states ──────────────────────────────────────── */
+.state-loading,
+.state-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.state-error {
+  color: var(--red);
+  background: var(--red-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,94,110,.2);
+}
+
+/* ─── Custom tooltip shell ────────────────────────────────────────── */
+.tip {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  box-shadow: var(--shadow-lg);
+  min-width: 140px;
+}
+
+.tip-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.tip-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ─── Footnote ────────────────────────────────────────────────────── */
+.footnote {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 16px;
+  line-height: 1.5;
 }

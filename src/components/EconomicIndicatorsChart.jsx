@@ -285,14 +285,13 @@ const EconomicIndicatorsChart = () => {
   const activeTabData = tabs.find(t => t.id === activeTab)
 
   return (
-    <div className="economic-indicators-section">
-      <div className="indicators-header">
+    <div className="economic-indicators-section card">
+      <div className="section-header">
         <div>
-          <h2>Housing Market Economic Indicators</h2>
-          <p className="indicators-subtitle">
-            Key metrics from the Federal Reserve Economic Data (FRED) — Updated April 2026
-          </p>
+          <div className="card-title">Housing Market Economic Indicators</div>
+          <div className="card-subtitle">Federal Reserve Economic Data (FRED) — Updated April 2026</div>
         </div>
+        <span className="badge badge-blue">Live FRED</span>
       </div>
 
       <div className="indicators-tabs">
@@ -308,9 +307,9 @@ const EconomicIndicatorsChart = () => {
       </div>
 
       {loading ? (
-        <div className="indicators-loading">Loading economic indicators...</div>
+        <div className="state-loading">Loading economic indicators…</div>
       ) : error ? (
-        <div className="indicators-error">{error}</div>
+        <div className="state-error">{error}</div>
       ) : (
         <div className="indicators-grid">
           {activeTabData?.series.map(seriesId => renderIndicatorCard(seriesId))}
@@ -332,9 +331,7 @@ const EconomicIndicatorsChart = () => {
         </div>
       </div>
 
-      <div className="indicators-footnote">
-        Data Source: Federal Reserve Economic Data (FRED), St. Louis Fed — Updated April 2026
-      </div>
+      <div className="footnote">Data Source: Federal Reserve Economic Data (FRED), St. Louis Fed — Updated April 2026</div>
     </div>
   )
 }

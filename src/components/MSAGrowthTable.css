@@ -1,181 +1,54 @@
 .msa-growth-section {
-  background: #18181b;
-  border-radius: 16px;
-  padding: 32px;
-  border: 1px solid #27272a;
-}
-
-.growth-header {
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #27272a;
-}
-
-.growth-header h2 {
-  font-size: 1.5rem;
-  color: #fafafa;
-  margin: 0 0 6px 0;
-  font-weight: 600;
-  letter-spacing: -0.5px;
-}
-
-.growth-subtitle {
-  color: #71717a;
-  font-size: 0.9rem;
-  margin: 0;
-  font-weight: 400;
-}
-
-.growth-loading,
-.growth-error {
-  padding: 48px;
-  text-align: center;
-  color: #71717a;
-  font-size: 1rem;
-}
-
-.growth-error {
-  color: #f87171;
-  background: rgba(248, 113, 113, 0.1);
-  border-radius: 8px;
-  border: 1px solid rgba(248, 113, 113, 0.2);
-}
-
-.msa-growth-section .table-wrapper {
-  overflow-x: auto;
-  border-radius: 8px;
-  border: 1px solid #27272a;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .growth-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.8rem;
   min-width: 1000px;
-}
-
-.growth-table thead tr:first-child th {
-  background: #27272a;
-  color: #e4e4e7;
-  font-weight: 600;
-  padding: 12px 8px;
-  text-align: center;
-  border-bottom: 1px solid #3f3f46;
-}
-
-.growth-table thead tr:nth-child(2) th {
-  background: #1f1f23;
-  color: #a1a1aa;
-  font-weight: 500;
-  padding: 10px 8px;
-  text-align: center;
-  font-size: 0.75rem;
-  border-bottom: 1px solid #27272a;
-}
-
-.growth-table tbody tr {
-  transition: background-color 0.15s ease;
-}
-
-.growth-table tbody tr:nth-child(even) {
-  background-color: rgba(39, 39, 42, 0.3);
-}
-
-.growth-table tbody tr:hover {
-  background-color: #1f1f23;
-}
-
-.growth-table td {
-  padding: 10px 8px;
-  border-bottom: 1px solid #27272a;
-  vertical-align: middle;
-  color: #e4e4e7;
 }
 
 .growth-table .rank-cell {
   text-align: center;
-  font-weight: 600;
-  color: #34d399;
-  font-size: 0.85rem;
-  width: 50px;
+  font-weight: 700;
+  color: var(--accent-hover);
+  font-size: 0.82rem;
+  width: 44px;
 }
 
 .growth-table .metro-name {
-  font-weight: 500;
-  color: #fafafa;
-  min-width: 250px;
-  max-width: 300px;
+  font-weight: 600;
+  color: var(--text-primary);
+  min-width: 240px;
+  max-width: 280px;
+  text-align: left;
 }
 
 .growth-table .number-cell,
 .growth-table .currency-cell {
-  text-align: right;
-  font-family: 'SF Mono', 'Monaco', monospace;
-  color: #a1a1aa;
+  font-family: var(--mono);
+  color: var(--text-secondary);
   white-space: nowrap;
 }
 
 .growth-table .change-cell,
 .growth-table .pct-cell {
-  text-align: right;
-  font-family: 'SF Mono', 'Monaco', monospace;
-  font-weight: 600;
+  font-family: var(--mono);
+  font-weight: 700;
   white-space: nowrap;
 }
 
-.growth-table .positive {
-  color: #34d399;
-  background-color: rgba(52, 211, 153, 0.1);
-}
+.growth-table .positive { color: var(--green); background: var(--green-bg); }
+.growth-table .negative { color: var(--red);   background: var(--red-bg); }
 
-.growth-table .negative {
-  color: #f87171;
-  background-color: rgba(248, 113, 113, 0.1);
-}
-
-/* Top 3 rows highlight */
+/* Top 3 gold accent */
 .growth-table tbody tr:nth-child(1) .rank-cell,
 .growth-table tbody tr:nth-child(2) .rank-cell,
 .growth-table tbody tr:nth-child(3) .rank-cell {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  color: #18181b;
-  border-radius: 4px;
-  font-weight: 700;
-}
-
-.growth-table tbody tr:nth-child(1) {
-  background-color: rgba(245, 158, 11, 0.08);
-}
-
-.growth-table tbody tr:nth-child(2) {
-  background-color: rgba(245, 158, 11, 0.05);
-}
-
-.growth-table tbody tr:nth-child(3) {
-  background-color: rgba(245, 158, 11, 0.03);
-}
-
-.growth-table tbody tr:nth-child(1):hover,
-.growth-table tbody tr:nth-child(2):hover,
-.growth-table tbody tr:nth-child(3):hover {
-  background-color: rgba(245, 158, 11, 0.12);
+  color: var(--amber);
 }
 
 @media (max-width: 768px) {
-  .msa-growth-section {
-    padding: 24px 20px;
-  }
-
-  .growth-header h2 {
-    font-size: 1.25rem;
-  }
-
-  .growth-table {
-    font-size: 0.75rem;
-  }
-
-  .growth-table td,
-  .growth-table th {
-    padding: 6px 4px;
-  }
+  .growth-table { font-size: 0.72rem; }
+  .growth-table td, .growth-table th { padding: 6px 6px; }
 }

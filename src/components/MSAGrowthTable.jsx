@@ -94,37 +94,32 @@ const MSAGrowthTable = () => {
   }
 
   return (
-    <div className="msa-growth-section">
-      <div className="growth-header">
-        <h2>Top 25 MSAs by Origination Volume Growth</h2>
-        <p className="growth-subtitle">
-          Year-over-Year Change in Mortgage Originations (2023 to 2024)
-        </p>
+    <div className="msa-growth-section card">
+      <div className="section-header">
+        <div>
+          <div className="card-title">Top 25 MSAs by Origination Volume Growth</div>
+          <div className="card-subtitle">Year-over-Year Change in Mortgage Originations (2023 → 2024)</div>
+        </div>
+        <span className="badge badge-green">▲ YoY Growth</span>
       </div>
 
       {loading ? (
-        <div className="growth-loading">Calculating growth data...</div>
+        <div className="state-loading">Calculating growth data…</div>
       ) : error ? (
-        <div className="growth-error">{error}</div>
+        <div className="state-error">{error}</div>
       ) : (
-        <div className="table-wrapper">
-          <table className="growth-table">
+        <div className="tbl-wrap">
+          <table className="tbl growth-table">
             <thead>
               <tr>
-                <th rowSpan="2">Rank</th>
-                <th rowSpan="2">Metro Market</th>
+                <th className="left" rowSpan="2">#</th>
+                <th className="left" rowSpan="2">Metro Market</th>
                 <th colSpan="4">Origination Count</th>
                 <th colSpan="4">Origination Volume ($000s)</th>
               </tr>
               <tr>
-                <th>2023</th>
-                <th>2024</th>
-                <th>Change</th>
-                <th>% Change</th>
-                <th>2023</th>
-                <th>2024</th>
-                <th>Change</th>
-                <th>% Change</th>
+                <th>2023</th><th>2024</th><th>Change</th><th>% Chg</th>
+                <th>2023</th><th>2024</th><th>Change</th><th>% Chg</th>
               </tr>
             </thead>
             <tbody>
@@ -132,22 +127,14 @@ const MSAGrowthTable = () => {
                 <tr key={metro.msa}>
                   <td className="rank-cell">{index + 1}</td>
                   <td className="metro-name">{metro.msaName}</td>
-                  <td className="number-cell">{formatNumber(metro.count2023)}</td>
-                  <td className="number-cell">{formatNumber(metro.count2024)}</td>
-                  <td className={`change-cell ${metro.countChange >= 0 ? 'positive' : 'negative'}`}>
-                    {formatChange(metro.countChange)}
-                  </td>
-                  <td className={`pct-cell ${metro.countPctChange >= 0 ? 'positive' : 'negative'}`}>
-                    {formatPctChange(metro.countPctChange)}
-                  </td>
-                  <td className="currency-cell">{formatCurrency(metro.amount2023)}</td>
-                  <td className="currency-cell">{formatCurrency(metro.amount2024)}</td>
-                  <td className={`change-cell ${metro.amountChange >= 0 ? 'positive' : 'negative'}`}>
-                    {formatChange(metro.amountChange / 1000)}
-                  </td>
-                  <td className={`pct-cell ${metro.amountPctChange >= 0 ? 'positive' : 'negative'}`}>
-                    {formatPctChange(metro.amountPctChange)}
-                  </td>
+                  <td className="mono">{formatNumber(metro.count2023)}</td>
+                  <td className="mono">{formatNumber(metro.count2024)}</td>
+                  <td className={`change-cell mono ${metro.countChange >= 0 ? 'positive' : 'negative'}`}>{formatChange(metro.countChange)}</td>
+                  <td className={`pct-cell mono ${metro.countPctChange >= 0 ? 'positive' : 'negative'}`}>{formatPctChange(metro.countPctChange)}</td>
+                  <td className="mono">{formatCurrency(metro.amount2023)}</td>
+                  <td className="mono">{formatCurrency(metro.amount2024)}</td>
+                  <td className={`change-cell mono ${metro.amountChange >= 0 ? 'positive' : 'negative'}`}>{formatChange(metro.amountChange / 1000)}</td>
+                  <td className={`pct-cell mono ${metro.amountPctChange >= 0 ? 'positive' : 'negative'}`}>{formatPctChange(metro.amountPctChange)}</td>
                 </tr>
               ))}
             </tbody>

@@ -1,58 +1,257 @@
-.App {
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 0;
+/* ─── Layout ──────────────────────────────────────────────────────── */
+.app-shell {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
-/* Dark modern header */
-.header {
-  background: linear-gradient(180deg, #18181b 0%, #0f0f12 100%);
+/* ─── Top nav ─────────────────────────────────────────────────────── */
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 10, 15, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.topnav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.topnav-logo {
+  width: 28px;
+  height: 28px;
+  background: var(--accent);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 800;
   color: white;
-  margin-bottom: 0;
-  padding: 48px 40px 40px;
-  border-bottom: 1px solid #27272a;
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
 }
 
-.header h1 {
-  font-size: 2.5rem;
+.topnav-title {
+  font-size: 0.92rem;
   font-weight: 700;
-  margin-bottom: 8px;
-  letter-spacing: -1px;
-  color: #fafafa;
+  color: var(--text-primary);
+  letter-spacing: -0.2px;
+  white-space: nowrap;
 }
 
-.header p {
-  font-size: 1rem;
-  font-weight: 400;
-  color: #71717a;
+.topnav-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.topnav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  overflow-x: auto;
+}
+
+.topnav-link {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  font-family: var(--font);
+}
+
+.topnav-link:hover {
+  color: var(--text-primary);
+  background: var(--bg-raised);
+}
+
+.topnav-link.active {
+  color: var(--accent-hover);
+  background: var(--accent-light);
+}
+
+.topnav-pill {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--green-bg);
+  border: 1px solid rgba(46,204,142,.25);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--green);
   letter-spacing: 0.2px;
 }
 
-/* Main content area */
-.main-content {
-  padding: 32px 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+.topnav-pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
 }
 
-/* Responsive design */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ─── Hero banner ─────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(160deg, #0f1020 0%, #0a0a0f 60%);
+  border-bottom: 1px solid var(--border);
+  padding: 40px 32px 36px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.hero-text h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.hero-text h1 span {
+  background: linear-gradient(90deg, var(--accent-hover) 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-text p {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  max-width: 480px;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 20px;
+  text-align: right;
+  min-width: 130px;
+}
+
+.hero-stat-num {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--text-primary);
+}
+
+.hero-stat-num.accent { color: var(--accent-hover); }
+.hero-stat-num.green  { color: var(--green); }
+
+.hero-stat-lbl {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 3px;
+}
+
+/* ─── Section nav tabs ────────────────────────────────────────────── */
+.section-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-surface);
+  overflow-x: auto;
+}
+
+.section-tab {
+  padding: 14px 18px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  font-family: var(--font);
+  margin-bottom: -1px;
+}
+
+.section-tab:hover {
+  color: var(--text-primary);
+}
+
+.section-tab.active {
+  color: var(--accent-hover);
+  border-bottom-color: var(--accent-hover);
+}
+
+/* ─── Main content ────────────────────────────────────────────────── */
+.main-content {
+  flex: 1;
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ─── Section panels ──────────────────────────────────────────────── */
+.section-panel {
+  display: none;
+}
+.section-panel.visible {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ─── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .header {
-    padding: 32px 20px;
-  }
-
-  .header h1 {
-    font-size: 1.75rem;
-  }
-
-  .header p {
-    font-size: 0.9rem;
-  }
-
-  .main-content {
-    padding: 20px;
-    gap: 24px;
-  }
+  .topnav { padding: 0 16px; }
+  .topnav-sub { display: none; }
+  .hero { padding: 28px 16px; }
+  .hero-text h1 { font-size: 1.5rem; }
+  .hero-stats { gap: 10px; }
+  .hero-stat { min-width: 100px; padding: 10px 14px; }
+  .hero-stat-num { font-size: 1.2rem; }
+  .section-tabs { padding: 0 16px; }
+  .main-content { padding: 20px 16px; }
 }

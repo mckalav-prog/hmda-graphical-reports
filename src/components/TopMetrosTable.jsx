@@ -354,13 +354,11 @@ const TopMetrosTable = () => {
   }
 
   return (
-    <div className="top-metros-section">
-      <div className="metros-header">
+    <div className="top-metros-section card">
+      <div className="section-header metros-header">
         <div>
-          <h2>{getTableTitle()}</h2>
-          <p className="metros-subtitle">
-            Retail/Broker/Non-Delegated Correspondent: Residential (1 to 4 Unit) Mortgage Originations
-          </p>
+          <div className="card-title">{getTableTitle()}</div>
+          <div className="card-subtitle">Residential (1–4 Unit) Mortgage Originations</div>
         </div>
         <div className="table-controls">
           <div className="view-selector">
@@ -407,9 +405,9 @@ const TopMetrosTable = () => {
       </div>
 
       {loading ? (
-        <div className="metros-loading">Loading {getViewLabel()} data...</div>
+        <div className="state-loading">Loading {getViewLabel()} data…</div>
       ) : error ? (
-        <div className="metros-error">{error}</div>
+        <div className="state-error">{error}</div>
       ) : (
         <>
           <div className="pdf-export">
@@ -417,8 +415,8 @@ const TopMetrosTable = () => {
               Download as PDF
             </a>
           </div>
-          <div className="table-wrapper">
-            <table className="metros-table">
+          <div className="tbl-wrap">
+            <table className="tbl metros-table">
               <thead>
                 <tr>
                   <th rowSpan="2">Rank</th>
