@@ -15,7 +15,7 @@ const MSAGrowthTable = () => {
       setLoading(true)
       setError('')
 
-      const response = await fetch('/data/top-metros.json')
+      const response = await fetch(`${import.meta.env.BASE_URL}data/top-metros.json`)
       if (!response.ok) {
         throw new Error('Failed to load metro data')
       }

@@ -62,7 +62,7 @@ const USMapVisualization = () => {
       setUsTopology(topoData)
 
       // Load state data
-      const dataResponse = await fetch('/data/by-state.json')
+      const dataResponse = await fetch(`${import.meta.env.BASE_URL}data/by-state.json`)
       if (!dataResponse.ok) throw new Error('Failed to load state data')
       const jsonData = await dataResponse.json()
 
