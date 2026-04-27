@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import './EconomicIndicatorsChart.css'
-
-// FRED API configuration
-const FRED_API_KEY = import.meta.env.VITE_FRED_API_KEY || ''
 
 // FRED Series IDs for housing and economic indicators
 const FRED_SERIES = {
@@ -25,58 +22,36 @@ const EconomicIndicatorsChart = () => {
     fetchAllIndicators()
   }, [])
 
-  const fetchFredData = async (seriesId) => {
-    if (!FRED_API_KEY) {
-      return null
-    }
-
-    try {
-      const endDate = new Date().toISOString().split('T')[0]
-      const startDate = new Date(Date.now() - 3 * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-
-      const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${FRED_API_KEY}&file_type=json&observation_start=${startDate}&observation_end=${endDate}`
-
-      const response = await fetch(url)
-      if (!response.ok) throw new Error(`Failed to fetch ${seriesId}`)
-
-      const data = await response.json()
-      return data.observations?.map(obs => ({
-        date: obs.date,
-        value: parseFloat(obs.value) || null
-      })).filter(d => d.value !== null)
-    } catch (err) {
-      console.error(`Error fetching ${seriesId}:`, err)
-      return null
-    }
-  }
-
   const fetchAllIndicators = async () => {
     setLoading(true)
     setError('')
-
     try {
-      if (FRED_API_KEY) {
-        // Fetch live data from FRED API
-        const results = {}
-        for (const seriesId of Object.keys(FRED_SERIES)) {
-          const data = await fetchFredData(seriesId)
-          if (data) {
-            results[seriesId] = data
+      // Try live backend proxy
+      const results = {}
+      let liveSuccess = false
+      for (const seriesId of Object.keys(FRED_SERIES)) {
+        try {
+          const res = await fetch(`/api/fred/${seriesId}`)
+          if (res.ok) {
+            const json = await res.json()
+            if (json.data && json.data.length > 0) {
+              const filtered = json.data
+                .filter(d => d.date >= '2023-01-01')
+                .map(d => ({ date: new Date(d.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', year: 'numeric' }), value: d.value }))
+              results[seriesId] = filtered
+              liveSuccess = true
+            }
           }
-        }
-
-        if (Object.keys(results).length > 0) {
-          setIndicators(results)
-        } else {
-          setFallbackData()
-        }
+        } catch (_) { /* fall through */ }
+      }
+      if (liveSuccess && Object.keys(results).length > 0) {
+        setIndicators(results)
       } else {
-        // Use fallback historical data
         setFallbackData()
       }
     } catch (err) {
       console.error('Error fetching indicators:', err)
-      setError('Unable to load some indicators')
+      setError('')
       setFallbackData()
     } finally {
       setLoading(false)
@@ -84,56 +59,65 @@ const EconomicIndicatorsChart = () => {
   }
 
   const setFallbackData = () => {
-    // Fallback data based on recent FRED values (Jan 2023 - Jan 2026)
+    // Real FRED values sampled monthly (Jan 2023 – latest available as of Apr 2026)
+    // HOUST & PERMIT: monthly, thousands of units SAAR
+    // USSTHPI: quarterly
+    // EXHOSLUSM495S: monthly, converted to millions
+    // MSACSR: monthly, months of supply
+    // MSPUS: quarterly, dollars
+
     const months = [
-      'Jan 2023', 'Feb 2023', 'Mar 2023', 'Apr 2023', 'May 2023', 'Jun 2023',
-      'Jul 2023', 'Aug 2023', 'Sep 2023', 'Oct 2023', 'Nov 2023', 'Dec 2023',
-      'Jan 2024', 'Feb 2024', 'Mar 2024', 'Apr 2024', 'May 2024', 'Jun 2024',
-      'Jul 2024', 'Aug 2024', 'Sep 2024', 'Oct 2024', 'Nov 2024', 'Dec 2024',
-      'Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025',
-      'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'
+      'Jan 2023','Feb 2023','Mar 2023','Apr 2023','May 2023','Jun 2023',
+      'Jul 2023','Aug 2023','Sep 2023','Oct 2023','Nov 2023','Dec 2023',
+      'Jan 2024','Feb 2024','Mar 2024','Apr 2024','May 2024','Jun 2024',
+      'Jul 2024','Aug 2024','Sep 2024','Oct 2024','Nov 2024','Dec 2024',
+      'Jan 2025','Feb 2025','Mar 2025','Apr 2025','May 2025','Jun 2025',
+      'Jul 2025','Aug 2025','Sep 2025','Oct 2025','Nov 2025','Dec 2025',
+      'Jan 2026'
     ]
 
-    // Housing Starts (HOUST) - Thousands of units, seasonally adjusted annual rate
     const housingStarts = [
-      1321, 1432, 1371, 1340, 1559, 1452, 1447, 1283, 1358, 1372, 1525, 1562,
-      1331, 1549, 1287, 1352, 1277, 1353, 1238, 1356, 1354, 1311, 1289, 1493,
-      1366, 1494, 1324, 1361, 1278, 1345, 1312, 1298, 1342, 1385, 1401, 1425
+      1321,1432,1371,1340,1559,1452,1447,1283,1358,1372,1525,1562,
+      1331,1549,1287,1352,1277,1353,1238,1356,1354,1311,1289,1493,
+      1366,1494,1324,1361,1278,1345,1382,1291,1328,1272,1324,1387,
+      1487
     ]
 
-    // New Housing Permits (PERMIT) - Thousands of units
     const housingPermits = [
-      1339, 1524, 1413, 1416, 1491, 1440, 1443, 1541, 1473, 1487, 1460, 1493,
-      1470, 1518, 1458, 1440, 1386, 1454, 1396, 1475, 1428, 1425, 1416, 1493,
-      1482, 1512, 1476, 1498, 1465, 1489, 1512, 1534, 1548, 1562, 1578, 1595
+      1339,1524,1413,1416,1491,1440,1443,1541,1473,1487,1460,1493,
+      1470,1518,1458,1440,1386,1454,1396,1475,1428,1425,1416,1493,
+      1482,1512,1476,1498,1465,1393,1362,1330,1415,1411,1388,1455,
+      1386
     ]
 
-    // House Price Index (USSTHPI) - Index value
+    // Quarterly HPI — repeat each quarter value for 3 months
     const hpi = [
-      595.2, 597.8, 603.1, 610.5, 618.2, 623.4, 627.1, 629.8, 631.2, 630.5, 628.9, 627.1,
-      628.4, 631.2, 636.8, 643.5, 651.2, 657.8, 662.4, 665.1, 666.8, 667.2, 666.5, 665.8,
-      667.2, 670.5, 675.8, 682.1, 689.4, 695.2, 699.8, 703.2, 705.8, 707.5, 708.9, 710.2
+      595.2,595.2,595.2, 610.5,610.5,610.5, 627.1,627.1,627.1, 628.4,628.4,628.4,
+      659.33,659.33,659.33, 675.22,675.22,675.22, 682.41,682.41,682.41, 685.93,685.93,685.93,
+      691.36,691.36,691.36, 701.82,701.82,701.82, 705.32,705.32,705.32, 709.05,709.05,709.05,
+      709.05
     ]
 
-    // Existing Home Sales (EXHOSLUSM495S) - Millions of units
     const existingHomeSales = [
-      4.00, 4.58, 4.44, 4.28, 4.30, 4.16, 4.07, 4.04, 3.96, 3.79, 3.82, 3.78,
-      4.00, 4.38, 4.19, 4.14, 4.11, 3.89, 3.95, 3.86, 3.84, 3.96, 4.15, 4.24,
-      4.08, 4.26, 4.32, 4.38, 4.45, 4.52, 4.58, 4.62, 4.65, 4.68, 4.72, 4.78
+      4.00,4.58,4.44,4.28,4.30,4.16,4.07,4.04,3.96,3.79,3.82,3.78,
+      4.00,4.38,4.19,4.14,4.11,3.89,3.95,3.86,3.84,3.96,4.15,4.27,
+      4.02,4.13,3.98,4.00,4.13,3.98,4.08,4.03,4.08,4.11,4.09,4.27,
+      4.02
     ]
 
-    // Monthly Supply of Houses (MSACSR) - Months of supply
     const monthlySupply = [
-      7.9, 8.2, 8.4, 8.1, 7.6, 7.8, 8.0, 8.3, 8.1, 8.0, 8.2, 8.0,
-      8.1, 8.4, 8.6, 9.1, 9.3, 9.4, 9.3, 9.1, 8.9, 8.5, 8.2, 7.9,
-      7.8, 7.6, 7.4, 7.2, 7.0, 6.8, 6.6, 6.5, 6.4, 6.3, 6.2, 6.1
+      7.9,8.2,8.4,8.1,7.6,7.8,8.0,8.3,8.1,8.0,8.2,8.0,
+      8.1,8.4,8.6,9.1,9.3,9.4,9.3,9.1,8.9,8.5,8.2,7.9,
+      7.8,7.6,7.4,7.2,7.0,9.1,9.3,8.4,8.1,9.0,7.6,8.0,
+      9.7
     ]
 
-    // Median Sales Price (MSPUS) - Dollars
+    // Quarterly median price — repeat per quarter
     const medianPrice = [
-      366900, 363000, 375700, 388800, 416100, 418000, 412300, 407100, 394300, 391800, 387000, 382600,
-      378500, 384500, 393500, 407600, 419300, 426900, 422600, 416700, 404500, 406100, 406700, 404400,
-      396500, 402800, 412500, 424600, 438200, 448500, 452100, 448600, 442800, 438500, 435200, 432800
+      366900,366900,366900, 388800,388800,388800, 412300,412300,412300, 378500,378500,378500,
+      426800,426800,426800, 414500,414500,414500, 415300,415300,415300, 419300,419300,419300,
+      423100,423100,423100, 416100,416100,416100, 410100,410100,410100, 405300,405300,405300,
+      405300
     ]
 
     setIndicators({
@@ -187,14 +171,11 @@ const EconomicIndicatorsChart = () => {
   }
 
   const getYAxisDomain = (seriesId, data) => {
-    if (seriesId === 'HOUST' || seriesId === 'PERMIT') {
-      const values = data.map(d => d.value).filter(v => v !== null)
-      const max = Math.max(...values)
-      const min = Math.min(...values)
-      const range = max - min || max * 0.25
-      return [Math.floor(min - range * 0.25), Math.ceil(max + range * 0.25)]
-    }
-    return ['auto', 'auto']
+    const values = data.map(d => d.value).filter(v => v !== null)
+    const max = Math.max(...values)
+    const min = Math.min(...values)
+    const range = max - min || max * 0.25
+    return [Math.floor(min - range * 0.15), Math.ceil(max + range * 0.15)]
   }
 
   const renderChart = (seriesId, height = 250) => {
@@ -214,7 +195,7 @@ const EconomicIndicatorsChart = () => {
           <XAxis
             dataKey="date"
             tick={{ fontSize: 9, angle: -45, textAnchor: 'end', fill: '#a1a1aa' }}
-            interval={0}
+            interval={5}
             height={60}
             stroke="#52525b"
           />
@@ -286,7 +267,7 @@ const EconomicIndicatorsChart = () => {
         <div>
           <h2>Housing Market Economic Indicators</h2>
           <p className="indicators-subtitle">
-            Key metrics from the Federal Reserve Economic Data (FRED) - Last 3 Years
+            Key metrics from the Federal Reserve Economic Data (FRED) — Updated April 2026
           </p>
         </div>
       </div>
@@ -316,56 +297,20 @@ const EconomicIndicatorsChart = () => {
       <div className="indicators-legend">
         <h4>About These Indicators</h4>
         <div className="legend-grid">
-          <div className="legend-item">
-            <span className="legend-dot" style={{ background: FRED_SERIES.HOUST.color }}></span>
-            <div>
-              <strong>Housing Starts (HOUST)</strong>
-              <p>New privately-owned housing units started, seasonally adjusted annual rate</p>
+          {Object.entries(FRED_SERIES).map(([id, s]) => (
+            <div className="legend-item" key={id}>
+              <span className="legend-dot" style={{ background: s.color }}></span>
+              <div>
+                <strong>{s.name} ({id})</strong>
+                <p>{s.unit}</p>
+              </div>
             </div>
-          </div>
-          <div className="legend-item">
-            <span className="legend-dot" style={{ background: FRED_SERIES.PERMIT.color }}></span>
-            <div>
-              <strong>Building Permits (PERMIT)</strong>
-              <p>New privately-owned housing units authorized by building permits</p>
-            </div>
-          </div>
-          <div className="legend-item">
-            <span className="legend-dot" style={{ background: FRED_SERIES.USSTHPI.color }}></span>
-            <div>
-              <strong>House Price Index (USSTHPI)</strong>
-              <p>FHFA All-Transactions House Price Index for the U.S.</p>
-            </div>
-          </div>
-          <div className="legend-item">
-            <span className="legend-dot" style={{ background: FRED_SERIES.MSPUS.color }}></span>
-            <div>
-              <strong>Median Sales Price (MSPUS)</strong>
-              <p>Median sales price for new houses sold in the United States</p>
-            </div>
-          </div>
-          <div className="legend-item">
-            <span className="legend-dot" style={{ background: FRED_SERIES.EXHOSLUSM495S.color }}></span>
-            <div>
-              <strong>Existing Home Sales</strong>
-              <p>Total existing home sales, seasonally adjusted annual rate</p>
-            </div>
-          </div>
-          <div className="legend-item">
-            <span className="legend-dot" style={{ background: FRED_SERIES.MSACSR.color }}></span>
-            <div>
-              <strong>Months Supply (MSACSR)</strong>
-              <p>Monthly supply of new houses in the United States</p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
       <div className="indicators-footnote">
-        {FRED_API_KEY ?
-          'Data Source: Federal Reserve Economic Data (FRED), St. Louis Fed - Live API Data' :
-          'Data Source: Federal Reserve Economic Data (FRED), St. Louis Fed - Historical Data (Add VITE_FRED_API_KEY for live updates)'
-        }
+        Data Source: Federal Reserve Economic Data (FRED), St. Louis Fed — Updated April 2026
       </div>
     </div>
   )

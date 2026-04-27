@@ -210,6 +210,38 @@ app.listen(PORT, () => {
   console.log(`Health check: http://localhost:${PORT}/api/health`);
 });
 
+// FRED proxy — keeps API calls server-side, supports optional FRED_API_KEY env var
+app.get('/api/fred/:seriesId', async (req, res) => {
+  const { seriesId } = req.params
+  const allowed = ['MORTGAGE30US','HOUST','PERMIT','USSTHPI','EXHOSLUSM495S','MSACSR','MSPUS']
+  if (!allowed.includes(seriesId)) return res.status(400).json({ error: 'Series not allowed' })
+  try {
+    const key = process.env.FRED_API_KEY || ''
+    const start = new Date(Date.now() - 4 * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+    const end = new Date().toISOString().split('T')[0]
+    let url
+    if (key) {
+      url = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${key}&file_type=json&observation_start=${start}&observation_end=${end}&sort_order=asc`
+      const r = await fetch(url)
+      const json = await r.json()
+      const data = (json.observations || []).map(o => ({ date: o.date, value: parseFloat(o.value) || null })).filter(d => d.value !== null)
+      return res.json({ seriesId, source: 'fred-api', data })
+    } else {
+      // Public CSV endpoint (no key required)
+      url = `https://fred.stlouisfed.org/graph/fredgraph.csv?id=${seriesId}`
+      const r = await fetch(url)
+      const text = await r.text()
+      const lines = text.trim().split('\n').slice(1)
+      const data = lines
+        .map(l => { const [date, val] = l.split(','); return { date: date.trim(), value: parseFloat(val) } })
+        .filter(d => !isNaN(d.value) && d.date >= start)
+      return res.json({ seriesId, source: 'fred-csv', data })
+    }
+  } catch (err) {
+    res.status(502).json({ error: 'FRED fetch failed', detail: err.message })
+  }
+})
+
 // Graceful shutdown
 process.on('SIGINT', () => {
   db.close();
