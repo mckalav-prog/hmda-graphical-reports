@@ -24,7 +24,9 @@ dist-ssr
 *.sw?
 .vercel
 .vercel
-*.zip
-*.csv
+# *.zip — tracked via LFS in data/
+!data/*.zip
+# *.csv — tracked via LFS in data/
+!data/*.csv
 .env
 *.db
