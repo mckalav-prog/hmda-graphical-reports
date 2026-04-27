@@ -3,88 +3,60 @@
     "1": {
       "loanType": "1",
       "loanTypeLabel": "Conventional",
-      "count": 5900548,
-      "totalAmount": 2044551790000,
-      "avgLoanSize": 346502.01811763924
+      "count": 5792002,
+      "totalAmount": 1791812120000,
+      "avgLoanSize": 309359.7205249584
     },
     "2": {
       "loanType": "2",
       "loanTypeLabel": "FHA",
-      "count": 1177313,
-      "totalAmount": 121798385000,
-      "avgLoanSize": 103454.54862046032
+      "count": 1520739,
+      "totalAmount": 436000085000,
+      "avgLoanSize": 286702.7708239218
+    },
+    "3": {
+      "loanType": "3",
+      "loanTypeLabel": "VA",
+      "count": 777967,
+      "totalAmount": 279620655000,
+      "avgLoanSize": 359424.8277883252
     },
     "4": {
       "loanType": "4",
       "loanTypeLabel": "FSA/RHS",
-      "count": 1258838,
-      "totalAmount": 150487950000,
-      "avgLoanSize": 119545.12812609725
-    },
-    "5": {
-      "loanType": "5",
-      "loanTypeLabel": "Type 5",
-      "count": 46857,
-      "totalAmount": 13740115000,
-      "avgLoanSize": 293235.0555946817
-    },
-    "31": {
-      "loanType": "31",
-      "loanTypeLabel": "Type 31",
-      "count": 719920,
-      "totalAmount": 177879480000,
-      "avgLoanSize": 247082.28692076897
-    },
-    "32": {
-      "loanType": "32",
-      "loanTypeLabel": "Type 32",
-      "count": 1393753,
-      "totalAmount": 411896975000,
-      "avgLoanSize": 295530.825763245
+      "count": 68612,
+      "totalAmount": 11955720000,
+      "avgLoanSize": 174251.1514020871
     }
   },
   "2024": {
     "1": {
       "loanType": "1",
       "loanTypeLabel": "Conventional",
-      "count": 5871071,
-      "totalAmount": 2107920575000,
-      "avgLoanSize": 359035.10194306966
+      "count": 5993840,
+      "totalAmount": 1882516960000,
+      "avgLoanSize": 314075.27728467894
     },
     "2": {
       "loanType": "2",
       "loanTypeLabel": "FHA",
-      "count": 1131237,
-      "totalAmount": 123977495000,
-      "avgLoanSize": 109594.62517580313
+      "count": 1696361,
+      "totalAmount": 516206855000,
+      "avgLoanSize": 304302.4774797346
+    },
+    "3": {
+      "loanType": "3",
+      "loanTypeLabel": "VA",
+      "count": 965106,
+      "totalAmount": 365263500000,
+      "avgLoanSize": 378469.8261123649
     },
     "4": {
       "loanType": "4",
       "loanTypeLabel": "FSA/RHS",
-      "count": 1328933,
-      "totalAmount": 151648205000,
-      "avgLoanSize": 114112.75436760168
-    },
-    "5": {
-      "loanType": "5",
-      "loanTypeLabel": "Type 5",
-      "count": 16812,
-      "totalAmount": 1750580000,
-      "avgLoanSize": 104126.81418034737
-    },
-    "31": {
-      "loanType": "31",
-      "loanTypeLabel": "Type 31",
-      "count": 1177693,
-      "totalAmount": 380420925000,
-      "avgLoanSize": 323022.1500849542
-    },
-    "32": {
-      "loanType": "32",
-      "loanTypeLabel": "Type 32",
-      "count": 1553880,
-      "totalAmount": 398128780000,
-      "avgLoanSize": 256215.91113856927
+      "count": 70580,
+      "totalAmount": 12809650000,
+      "avgLoanSize": 181491.21564182488
     }
   }
 }

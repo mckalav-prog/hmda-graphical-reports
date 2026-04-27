@@ -104,17 +104,35 @@ async function processHMDAFile(filePath, year) {
     const fields = line.split('|');
 
     // Extract key fields
-    const lei = fields[1]; // Legal Entity Identifier (lender)
-    const loanType = fields[3];
-    const loanPurpose = fields[4];
-    const actionTaken = fields[6];
+    // Field indices verified empirically against 2023/2024 combined MLAR pipe-delimited format:
+    // 0:activity_year, 1:lei, 2:loan_type, 3:loan_purpose, 4:open_end_line_of_credit,
+    // 5:lien_status, 6:action_taken, 7:loan_amount, 8:purchaser_type,
+    // 9:state, 10:county, 70:property_value, 73:total_units
+    const lei = fields[1];          // Legal Entity Identifier (lender)
+    const loanType = fields[2];     // 1=Conventional, 2=FHA, 3=VA, 4=FSA/RHS
+    const loanPurpose = fields[3];  // 1=Purchase, 2=Refi, 31=Cash-out, 32=OtherRefi, 4=Other, 5=N/A
+    const openEndLOC = fields[4];   // 1=open-end line of credit, 2=closed-end
+    const lienStatus = fields[5];   // 1=first lien, 2=subordinate lien
+    const actionTaken = fields[6];  // 1=originated
     const loanAmount = parseFloat(fields[7]) || 0;
     const state = fields[9];
     const countyCode = fields[10];
     const propertyValue = parseFloat(fields[70]) || 0; // property_value field
+    const totalUnits = fields[73];  // 1=1-unit, 2=2-unit, 3=3-unit, 4=4-unit, 5=5-24, etc.
 
-    // Only process originated loans (action_taken = 1)
-    if (actionTaken !== '1' || loanAmount === 0) continue;
+    // Filter: originated loans only
+    if (actionTaken !== '1') continue;
+    // Filter: first lien only (secured by a first lien)
+    if (lienStatus !== '1') continue;
+    // Filter: closed-end loans only (exclude open-end lines of credit)
+    if (openEndLOC !== '2') continue;
+    // Filter: 1-4 unit residential properties only
+    if (!['1', '2', '3', '4'].includes(totalUnits)) continue;
+    // Filter: exclude loan_purpose 4=Other and 5=Not Applicable
+    // (also naturally excludes any home improvement if coded separately)
+    if (!['1', '2', '31', '32'].includes(loanPurpose)) continue;
+    // Filter: must have a valid loan amount
+    if (loanAmount === 0) continue;
 
     // Look up MSA from county code
     const msaInfo = countyToMSA[countyCode];
