@@ -61,10 +61,11 @@ const TopMetrosTable = () => {
       setError('')
 
       // Determine which file to load based on viewType
+      const base = import.meta.env.BASE_URL
       const fileMap = {
-        'msa': '/data/top-metros.json',
-        'state': '/data/by-state.json',
-        'lender': '/data/by-lender.json'
+        'msa': `${base}data/top-metros.json`,
+        'state': `${base}data/by-state.json`,
+        'lender': `${base}data/by-lender.json`
       }
 
       const response = await fetch(fileMap[viewType])
