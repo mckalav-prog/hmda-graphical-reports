@@ -1,0 +1,34 @@
+{
+  "2023": {
+    "1": {
+      "loanPurpose": "1",
+      "loanPurposeLabel": "Purchase",
+      "count": 416905,
+      "totalAmount": 155419605000,
+      "avgLoanSize": 372793.8139384272
+    },
+    "2": {
+      "loanPurpose": "2",
+      "loanPurposeLabel": "Refinance",
+      "count": 10080324,
+      "totalAmount": 2764935090000,
+      "avgLoanSize": 274290.29959751293
+    }
+  },
+  "2024": {
+    "1": {
+      "loanPurpose": "1",
+      "loanPurposeLabel": "Purchase",
+      "count": 369796,
+      "totalAmount": 146501740000,
+      "avgLoanSize": 396169.07700461877
+    },
+    "2": {
+      "loanPurpose": "2",
+      "loanPurposeLabel": "Refinance",
+      "count": 10709830,
+      "totalAmount": 3017344820000,
+      "avgLoanSize": 281736.01448389003
+    }
+  }
+}
