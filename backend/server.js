@@ -13,6 +13,35 @@ const db = new Database(join(__dirname, 'hmda.db'));
 app.use(cors());
 app.use(express.json());
 
+// ── HMDA label maps — corrected per MLAR schema ────────────────────────────
+// Reference: https://ffiec.cfpb.gov/documentation/publications/modified-lar/modified-lar-schema
+const LOAN_TYPE_LABELS = {
+  '1': 'Conventional',
+  '2': 'FHA',
+  '3': 'VA',
+  '4': 'FSA/RHS (USDA)'
+};
+
+const LOAN_PURPOSE_LABELS = {
+  '1': 'Home Purchase',
+  '2': 'Home Improvement',
+  '31': 'Refinancing',
+  '32': 'Cash-Out Refinancing',
+  '4': 'Other Purpose',
+  '5': 'Not Applicable'
+};
+
+const ACTION_TAKEN_LABELS = {
+  '1': 'Loan Originated',
+  '2': 'Approved, Not Accepted',
+  '3': 'Application Denied',
+  '4': 'Application Withdrawn by Applicant',
+  '5': 'File Closed for Incompleteness',
+  '6': 'Purchased Loan',
+  '7': 'Preapproval Request Denied',
+  '8': 'Preapproval Request Approved, Not Accepted'
+};
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'HMDA API is running' });
@@ -107,7 +136,10 @@ app.get('/api/aggregate/by-loan-purpose', (req, res) => {
     query += ' GROUP BY loan_purpose ORDER BY loan_count DESC';
 
     const results = db.prepare(query).all(...params);
-    res.json(results);
+    res.json(results.map(r => ({
+      ...r,
+      loan_purpose_label: LOAN_PURPOSE_LABELS[r.loan_purpose] || r.loan_purpose
+    })));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -140,7 +172,10 @@ app.get('/api/aggregate/by-action', (req, res) => {
     query += ' GROUP BY action_taken ORDER BY loan_count DESC';
 
     const results = db.prepare(query).all(...params);
-    res.json(results);
+    res.json(results.map(r => ({
+      ...r,
+      action_taken_label: ACTION_TAKEN_LABELS[r.action_taken] || r.action_taken
+    })));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
