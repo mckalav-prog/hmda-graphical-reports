@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import MortgageRatesChart from './components/MortgageRatesChart'
 import EconomicIndicatorsChart from './components/EconomicIndicatorsChart'
 import TopMetrosTable from './components/TopMetrosTable'
@@ -14,8 +14,21 @@ const TABS = [
   { id: 'map',        label: 'US Loan Map' },
 ]
 
+function fmtM(n) {
+  if (!n) return '—';
+  return (n / 1_000_000).toFixed(1) + 'M';
+}
+
 function App() {
   const [activeTab, setActiveTab] = useState('rates')
+  const [stats, setStats] = useState(null)
+
+  useEffect(() => {
+    fetch('/api/stats')
+      .then(r => r.json())
+      .then(d => setStats(d))
+      .catch(() => {})
+  }, [])
 
   return (
     <div className="app-shell">
@@ -50,22 +63,32 @@ function App() {
         <div className="hero-text">
           <h1>US Mortgage Lending <span>Analytics</span></h1>
           <p>
-            Nationwide HMDA data for 2023–2024 — originations, denials, loan
-            purpose, geographic trends, and economic indicators in one place.
+            Nationwide HMDA data for 2023–2024 — originated Home Purchase &amp; Refinance loans,
+            geographic trends, loan types, and economic indicators in one place.
           </p>
         </div>
         <div className="hero-stats">
           <div className="hero-stat">
-            <div className="hero-stat-num accent">21.6M</div>
-            <div className="hero-stat-lbl">Total Records</div>
+            <div className="hero-stat-num accent">
+              {stats ? fmtM(stats.totalRecords) : '—'}
+            </div>
+            <div className="hero-stat-lbl">Originated Loans</div>
           </div>
           <div className="hero-stat">
-            <div className="hero-stat-num green">6.23%</div>
-            <div className="hero-stat-lbl">Current 30-Yr Rate</div>
+            <div className="hero-stat-num green">
+              {stats?.byPurpose?.find(p => p.loan_purpose === '1')
+                ? fmtM(stats.byPurpose.find(p => p.loan_purpose === '1').count)
+                : '—'}
+            </div>
+            <div className="hero-stat-lbl">Home Purchase</div>
           </div>
           <div className="hero-stat">
-            <div className="hero-stat-num">50</div>
-            <div className="hero-stat-lbl">States Covered</div>
+            <div className="hero-stat-num">
+              {stats?.byPurpose?.find(p => p.loan_purpose === '31')
+                ? fmtM(stats.byPurpose.find(p => p.loan_purpose === '31').count)
+                : '—'}
+            </div>
+            <div className="hero-stat-lbl">Refinancing</div>
           </div>
         </div>
       </section>
