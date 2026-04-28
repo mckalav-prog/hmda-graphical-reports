@@ -3,6 +3,7 @@ import cors from 'cors';
 import Database from 'better-sqlite3';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { existsSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -333,6 +334,14 @@ app.get('/api/fred/:seriesId', async (req, res) => {
     res.status(502).json({ error: 'FRED fetch failed', detail: err.message });
   }
 });
+
+// Serve built frontend (production) from dist/
+const distPath = join(__dirname, '..', 'dist');
+if (existsSync(distPath)) {
+  app.use('/hmda-graphical-reports', express.static(distPath));
+  app.get('/hmda-graphical-reports/*', (_req, res) => res.sendFile(join(distPath, 'index.html')));
+  console.log(`Serving frontend from: ${distPath}`);
+}
 
 // Graceful shutdown
 process.on('SIGINT', () => {
